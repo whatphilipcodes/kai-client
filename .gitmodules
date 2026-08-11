@@ -1,0 +1,3 @@
+[submodule "kai-shared"]
+	path = kai-shared
+	url = https://github.com/whatphilipcodes/kai-shared

@@ -3,5 +3,8 @@ name = "kai-client"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = []
+requires-python = "~=3.14.0"
+dependencies = ["kai-shared"]
+
+[tool.uv.sources]
+kai-shared = { path = "./kai-shared", editable = true }
