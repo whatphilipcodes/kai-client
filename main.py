@@ -1,4 +1,4 @@
-import asyncio
+import uvloop
 
 from kai_shared.io.node import PipelineNode
 from kai_shared.utils.logger import setup_logging
@@ -13,4 +13,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    uvloop.run(main())

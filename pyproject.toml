@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = "~=3.14.0"
-dependencies = ["kai-shared"]
+dependencies = [
+    "kai-shared",
+    "uvloop>=0.22.1",
+]
 
 [tool.uv.sources]
 kai-shared = { path = "./kai-shared", editable = true }
