@@ -11,3 +11,9 @@ dependencies = [
 
 [tool.uv.sources]
 kai-shared = { path = "./kai-shared", editable = true }
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.2",
+    "ty>=0.0.70",
+]
