@@ -1,21 +1,28 @@
 [project]
 name = "kai-client"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = "~=3.14.0"
+description = "Local-only, process-per-stage speech-to-speech pipeline: UDP for audio, ZeroMQ for tokens"
+requires-python = ">=3.15"
 dependencies = [
-    "kai-shared",
-    "numpy>=2.5.2",
-    "sounddevice>=0.5.5",
-    "uvloop>=0.22.1",
+  "httpx>=0.28",
+  "pydantic-settings>=2.16.2",
+  "pyzmq>=26",
+  "sounddevice>=0.5",
+  "tomli-w>=1.2.0",
+  "uvloop>=0.23.0",
+  "websockets>=13",
 ]
 
-[tool.uv.sources]
-kai-shared = { path = "./kai-shared", editable = true }
+[project.scripts]
+kai-client = "kai_client.main:main"
 
 [dependency-groups]
 dev = [
-    "ruff>=0.16.2",
-    "ty>=0.0.70",
+  "pytest>=9",
+  "ruff>=0.17.3",
+  "ty>=0.0.96",
 ]
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"

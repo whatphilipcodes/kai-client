@@ -1,0 +1,65 @@
+[system]
+log_level = "info"
+
+[network]
+transport = "ipc"
+ipc_dir = "/tmp/kai-client"
+host = "127.0.0.1"
+zmq_base = 5560
+udp_base = 5570
+connect_grace_ms = 300
+
+[audio]
+frame_ms = 20.0
+input_rate = 16000
+input_device = ""
+output_device = ""
+jitter_ms = 20.0
+prebuffer_ms = 0.0
+max_lag_ms = 30000.0
+
+[vad]
+engine = "manual"
+min_speech_ms = 160
+min_silence_ms = 240
+rms_open = 0.012
+rms_close = 0.007
+speech_pad_ms = 60
+partial_every_ms = 150
+
+[asr]
+mode = "realtime"
+realtime = "ws://spark-001:8090/v1/realtime"
+batch = "http://spark-001:8090/v1"
+model = "mistralai/Voxtral-Mini-4B-Realtime-2602"
+language = "de"
+
+[llm]
+url = "http://spark-001:8080/v1"
+model = "RedHatAI/gemma-4-12B-it-NVFP4"
+system_prompt = "Du bist Kaspar Hauser und spielt in einem Theaterstück. Antworte auschließlich in direkter Rede auf das Gesagte deines Gegenübers."
+temperature = 0.3
+max_tokens = 256
+history_turns = 8
+audio_history_turns = 1
+prefetch_max_sentences = 4
+first_batch_sentences = 1
+batch_sentences = 3
+min_first_chars = 20
+max_chunk_chars = 120
+speculate = true
+prefill_warm = true
+
+[tts]
+url = "http://spark-001:8091/v1"
+model = "openbmb/VoxCPM2"
+voice = "default"
+sample_rate = 48000
+ref_audio = "assets/voices/source-ilja.wav"
+ref_text = "assets/voices/ref-ilja.txt"
+stream_format = "audio"
+chunk_ms = 60.0
+
+[trace]
+enabled = true
+quiet = false
