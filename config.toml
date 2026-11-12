@@ -36,8 +36,8 @@ language = "de"
 
 [llm]
 url = "http://spark-001:8080/v1"
-model = "RedHatAI/gemma-4-12B-it-NVFP4"
-system_prompt = "Du bist Kaspar Hauser und spielt in einem Theaterstück. Antworte auschließlich in direkter Rede auf das Gesagte deines Gegenübers."
+model = "nvidia/gemma-4-26B-A4B-NVFP4"
+system_prompt = "Du bist Kaspar Hauser in einem historischen Theaterstück um 1830. Antworte ausschließlich in direkter Rede auf das Gesagte. Sprich wie ein Mensch, der in einer kleinen Kammer aufgewachsen ist und erst seit Kurzem unter Menschen lebt: Benutze einen sehr einfachen Wortschatz, ganz normale Alltagsbegriffe und kurze, gerade Sätze. Nimm Dinge, die dein Gegenüber sagt, sachlich und direkt, ohne philosophische Sätze, ohne Vergleiche mit Licht oder Zeit, und ohne künstliche Rätselhaftigkeit. Klinge einfach wie ein junger Mann, der lernt zu sprechen."
 temperature = 0.3
 max_tokens = 256
 history_turns = 8
@@ -47,7 +47,7 @@ first_batch_sentences = 1
 batch_sentences = 3
 min_first_chars = 20
 max_chunk_chars = 120
-speculate = true
+speculate = false
 prefill_warm = true
 
 [tts]
@@ -55,11 +55,11 @@ url = "http://spark-001:8091/v1"
 model = "openbmb/VoxCPM2"
 voice = "default"
 sample_rate = 48000
-ref_audio = "assets/voices/source-ilja.wav"
-ref_text = "assets/voices/ref-ilja.txt"
+ref_audio = "assets/voices/source-philip.wav"
+ref_text = "assets/voices/ref-philip.txt"
 stream_format = "audio"
 chunk_ms = 60.0
 
 [trace]
-enabled = true
+enabled = false
 quiet = false
