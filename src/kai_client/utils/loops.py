@@ -10,9 +10,9 @@ if sys.platform != "win32":
 
 
 def new_event_loop() -> asyncio.AbstractEventLoop:
-    if sys.platform != "win32":
-        return uvloop.new_event_loop()
-    return asyncio.new_event_loop()
+    if sys.platform == "win32":
+        return asyncio.SelectorEventLoop()
+    return uvloop.new_event_loop()
 
 
 def run(main: Coroutine[Any, Any, Any], *, debug: bool = False) -> Any:

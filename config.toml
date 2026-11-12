@@ -3,7 +3,7 @@ log_level = "info"
 
 [network]
 transport = "ipc"
-ipc_dir = "/tmp/kai-client"
+ipc_dir = ""
 host = "127.0.0.1"
 zmq_base = 5560
 udp_base = 5570
@@ -55,8 +55,8 @@ url = "http://spark-001:8091/v1"
 model = "openbmb/VoxCPM2"
 voice = "default"
 sample_rate = 48000
-ref_audio = "assets/voices/source-philip.wav"
-ref_text = "assets/voices/ref-philip.txt"
+ref_audio = "assets/voices/source-ilja.wav"
+ref_text = "assets/voices/ref-ilja.txt"
 stream_format = "audio"
 chunk_ms = 60.0
 

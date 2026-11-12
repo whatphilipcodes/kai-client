@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import tempfile
 import tomllib
 from enum import StrEnum
 from ipaddress import IPv4Address
@@ -113,12 +114,26 @@ class System(Section):
 
 class Network(Section):
     transport: Transport = Transport.IPC
-    ipc_dir: str = "/tmp/kai-client"
+    ipc_dir: str = ""
     host: str | IPv4Address = "127.0.0.1"
     zmq_base: int = 5560
     udp_base: int = 5570
     connect_grace_ms: int = 300
     session: str = "default"
+
+    @property
+    def runtime_dir(self) -> str:
+        if self.ipc_dir:
+            return self.ipc_dir
+        if os.name == "nt":
+            return str(Path(tempfile.gettempdir()) / "kai-client")
+        return "/tmp/kai-client"
+
+    @property
+    def local(self) -> Transport:
+        if self.transport is Transport.IPC and os.name == "nt":
+            return Transport.TCP
+        return self.transport
 
     def stream(self, name: str) -> Endpoint:
         return self._endpoint(
@@ -139,8 +154,8 @@ class Network(Section):
         ]
 
     def _endpoint(self, name: str, port: int) -> Endpoint:
-        path = f"{self.ipc_dir}/{name}" if self.transport is Transport.IPC else ""
-        return Endpoint(protocol=self.transport, host=self.host, path=path, port=port)
+        path = f"{self.runtime_dir}/{name}" if self.local is Transport.IPC else ""
+        return Endpoint(protocol=self.local, host=self.host, path=path, port=port)
 
 
 class Audio(Section):
@@ -260,9 +275,9 @@ class Config(BaseSettings):
         )
 
     def prepare(self) -> None:
-        if self.network.transport is not Transport.IPC:
+        os.makedirs(self.network.runtime_dir, exist_ok=True)
+        if self.network.local is not Transport.IPC:
             return
-        os.makedirs(self.network.ipc_dir, exist_ok=True)
         longest = max(
             self.network.endpoints(), key=lambda endpoint: len(endpoint.socket)
         )

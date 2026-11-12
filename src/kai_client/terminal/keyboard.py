@@ -6,15 +6,56 @@ import contextlib
 import io
 import os
 import sys
-import termios
 import threading
-import tty
 from collections.abc import Callable
 from time import monotonic
 from typing import Any
 
+if sys.platform == "win32":
+    import msvcrt
+else:
+    import termios
+    import tty
+
 SPACE = b" "
 REPEAT_GAP_S = 0.25
+POLL_S = 0.02
+
+
+def _arm(stream: Any) -> tuple[int, Any]:
+    if sys.platform == "win32":
+        return (-1, True) if stream.isatty() else (-1, None)
+    try:
+        fd = stream.fileno()
+        saved = termios.tcgetattr(fd)
+    except OSError, ValueError, termios.error:
+        return (-1, None)
+    tty.setcbreak(fd)
+    return (fd, saved)
+
+
+def _disarm(fd: int, saved: Any) -> None:
+    if sys.platform == "win32":
+        return
+    with contextlib.suppress(Exception):
+        termios.tcsetattr(fd, termios.TCSADRAIN, saved)
+
+
+def _read(fd: int, quit_event: threading.Event) -> bytes | None:
+    if sys.platform == "win32":
+        while not quit_event.is_set():
+            if not msvcrt.kbhit():
+                quit_event.wait(POLL_S)
+                continue
+            key = msvcrt.getwch()
+            if key in ("\x00", "\xe0"):
+                msvcrt.getwch()
+            return key.encode("utf-8", "backslashreplace")
+        return None
+    try:
+        return os.read(fd, 64)
+    except OSError, ValueError:
+        return None
 
 
 class SpaceKey:
@@ -49,14 +90,11 @@ class SpaceKey:
     def start(self) -> bool:
         if self.attached:
             return True
-        try:
-            fd = self.stream.fileno()
-            saved = termios.tcgetattr(fd)
-        except OSError, ValueError, termios.error:
+        fd, saved = _arm(self.stream)
+        if saved is None:
             return False
         self.fd, self._saved = fd, saved
         self._loop = asyncio.get_running_loop()
-        tty.setcbreak(fd)
         self._last = 0.0
         self._quit.clear()
         self._thread = threading.Thread(
@@ -71,13 +109,12 @@ class SpaceKey:
         self._quit.set()
         if saved is None:
             return
-        with contextlib.suppress(Exception):
-            termios.tcsetattr(self.fd, termios.TCSADRAIN, saved)
+        _disarm(self.fd, saved)
 
     def _watch(self) -> None:
         while not self._quit.is_set():
             try:
-                typed = os.read(self.fd, 64)
+                typed = _read(self.fd, self._quit)
             except OSError, ValueError, KeyboardInterrupt:
                 return
             if not typed or self._quit.is_set():

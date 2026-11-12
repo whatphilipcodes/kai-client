@@ -59,7 +59,7 @@ def _launch(
     log = log or Logger()
     env = {
         **os.environ,
-        "KAI_CLIENT_CONFIG": str(dump(cfg, Path(cfg.network.ipc_dir) / "launch.toml")),
+        "KAI_CLIENT_CONFIG": str(dump(cfg, Path(cfg.network.runtime_dir) / "launch.toml")),
     }
     handles = [
         subprocess.Popen(

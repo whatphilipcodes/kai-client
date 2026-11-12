@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextlib
 import os
 import select
+import sys
 from time import monotonic
 from typing import TextIO
 
@@ -19,6 +20,11 @@ def write(stream: TextIO, text: str) -> None:
     blocking write would have done; giving up is what keeps the audio loop running. A line lost
     from the console is still in the log, and a raise here would cost the turn report after it.
     """
+    if sys.platform == "win32":
+        with contextlib.suppress(OSError, ValueError):
+            stream.write(text)
+            stream.flush()
+        return
     try:
         fd = stream.fileno()
     except AttributeError, OSError, ValueError:
