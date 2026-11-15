@@ -56,7 +56,7 @@ model = "openbmb/VoxCPM2"
 voice = "default"
 sample_rate = 48000
 ref_audio = "assets/voices/source-ilja.wav"
-ref_text = "assets/voices/ref-ilja.txt"
+ref_text = "assets/voices/ref-long.txt"
 stream_format = "audio"
 chunk_ms = 60.0
 
