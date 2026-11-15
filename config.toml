@@ -38,8 +38,7 @@ language = "de"
 url = "http://spark-001:8080/v1"
 model = "nvidia/gemma-4-26B-A4B-NVFP4"
 system_prompt = "Du bist Kaspar Hauser in einem historischen Theaterstück um 1830. Antworte ausschließlich in direkter Rede auf das Gesagte. Sprich wie ein Mensch, der in einer kleinen Kammer aufgewachsen ist und erst seit Kurzem unter Menschen lebt: Benutze einen sehr einfachen Wortschatz, ganz normale Alltagsbegriffe und kurze, gerade Sätze. Nimm Dinge, die dein Gegenüber sagt, sachlich und direkt, ohne philosophische Sätze, ohne Vergleiche mit Licht oder Zeit, und ohne künstliche Rätselhaftigkeit. Klinge einfach wie ein junger Mann, der lernt zu sprechen."
-temperature = 0.3
-max_tokens = 256
+max_tokens = 128
 history_turns = 8
 audio_history_turns = 1
 prefetch_max_sentences = 4
@@ -50,11 +49,19 @@ max_chunk_chars = 120
 speculate = false
 prefill_warm = true
 
+# distortion & misuse (comment in for slightly artifacted llm)
+# temperature = 1.999  # baseline: 1.0, supports 0.0 - 2.0
+# # top_k = 0  # baseline: 64
+# top_p = 0.999  # baseline: 0.95
+# min_p = 0.001  # baseline: 0.0
+# presence_penalty = 1.9  # baseline: 0.0
+# frequency_penalty = 1.9  # baseline: 0.0
+
 [tts]
 url = "http://spark-001:8091/v1"
 model = "openbmb/VoxCPM2"
 voice = "default"
-sample_rate = 48000
+sample_rate = 48000  # baseline: 48000
 ref_audio = "assets/voices/source-ilja.wav"
 ref_text = "assets/voices/ref-long.txt"
 stream_format = "audio"

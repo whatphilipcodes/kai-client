@@ -37,6 +37,18 @@ class Chat:
             "temperature": self.config.temperature,
             "max_tokens": limit,
         }
+        body = {
+            "model": self.config.model,
+            "messages": _wire(messages),
+            "stream": True,
+            "temperature": self.config.temperature,
+            "max_tokens": limit,
+            "top_p": self.config.top_p,
+            "top_k": self.config.top_k,
+            "min_p": self.config.min_p,
+            "presence_penalty": self.config.presence_penalty,
+            "frequency_penalty": self.config.frequency_penalty,
+        }
         began = monotonic_ns()
         first, deltas, chars = 0.0, 0, 0
         now = lambda: round((monotonic_ns() - began) / 1e6, 1)

@@ -30,3 +30,7 @@
     cd <repository root>
     uv run kai-client
     ```
+
+### Distortion & Misuse
+
+At the moment exclusively controlled via the `distortion & misuse` block in the `config.toml`. With the generation parameters the generated repossess can be affected. When modifying, generation is becoming very unpredictable quickly and even small changes destabilize the output entirely. The commented out example config strikes a middle ground with occasional utterance of random languages and word particles. This becomes increasingly noticeable with longer conversations (history limit is set to 8 turns). The first response usually comes out legible and then onwards the responses derail slightly until there are only fragments generated.

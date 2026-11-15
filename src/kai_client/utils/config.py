@@ -197,7 +197,6 @@ class Llm(Section):
     model: str = "model"
     api_key: str = ""
     system_prompt: str = "Du bist Kaspar. Antworte in einem kurzen Satz."
-    temperature: float = 0.3
     max_tokens: int = 128
     history_turns: int = 8
     audio_history_turns: int = 1
@@ -208,6 +207,13 @@ class Llm(Section):
     max_chunk_chars: int = 120
     speculate: bool = True
     prefill_warm: bool = True
+
+    temperature: float = 1.0
+    top_k: int = 64
+    top_p: float = 0.95
+    min_p: float = 0.0
+    presence_penalty: float = 0.0
+    frequency_penalty: float = 0.0
 
 
 class Tts(Section):
