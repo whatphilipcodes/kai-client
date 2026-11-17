@@ -47,5 +47,5 @@ At the moment exclusively controlled via the `distortion & misuse` block in the 
 
 All saved in `licenses.csv`. To update run:
 ```sh
-uv run pip-licenses --format=csv > licenses.csv
+uv run pip-licenses --format=csv > licenses-kai-client.csv
 ```
